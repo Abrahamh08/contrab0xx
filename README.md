@@ -1,6 +1,9 @@
 personal fork for my DIY hybrid box using wunwaes fork updated to haybox 3.0
+
 not rly intended for use by others.
+
 ruleset compliant changes for hybrid melee with nsocd default on c-buttons.
+
 config mode button hold changed from START -> UP (due to dedicated hybrids not having a start button)
 
 
