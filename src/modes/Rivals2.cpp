@@ -33,6 +33,14 @@ void Rivals2::UpdateDigitalOutputs(const InputState &inputs, OutputState &output
     //only because buttonL is a default mapping in Rivals 2 (doesn't really matter)
 
     // Activate D-Pad layer by holding Mod X + Mod Y.
+    if (inputs.nunchuk_connected) {
+        outputs.start = inputs.nunchuk_start;
+        outputs.dpadLeft = inputs.nunchuk_dleft;
+        outputs.dpadRight = inputs.nunchuk_dright;
+        outputs.dpadUp = inputs.nunchuk_dup;
+        outputs.dpadDown = inputs.nunchuk_ddown;
+     }
+
     if (inputs.lt1 && inputs.lt2) {
         outputs.dpadUp = inputs.rt4;
         outputs.dpadDown = inputs.rt2;
@@ -58,6 +66,7 @@ void Rivals2::UpdateAnalogOutputs(const InputState &inputs, OutputState &outputs
         outputs
     );
 
+    outputs.triggerLAnalog = inputs.l_analog;
     bool shield_button_pressed = inputs.lf4 || inputs.rf5; // if L or R are pressed
 
     if (directions.diagonal && !shield_button_pressed) { //added this conditional to give joystick accurate diagonals rather than (+/- 1.2, 1.2) should be (0.87~, 0.87~)

@@ -82,9 +82,14 @@ typedef struct _InputState {
             bool nunchuk_connected : 1;
             bool nunchuk_c : 1;
             bool nunchuk_z : 1;
+            bool nunchuk_dleft : 1;
+            bool nunchuk_dright : 1;
+            bool nunchuk_ddown : 1;
+            bool nunchuk_dup : 1;
+            bool nunchuk_start : 1;
         };
     };
-
+    int8_t l_analog = 0;
     int8_t nunchuk_x = 0;
     int8_t nunchuk_y = 0;
 } InputState;

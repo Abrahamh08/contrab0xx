@@ -35,6 +35,14 @@ void RivalsOfAether::UpdateDigitalOutputs(const InputState &inputs, OutputState 
         outputs.dpadLeft = inputs.rt3;
         outputs.dpadRight = inputs.rt5;
     }
+
+    if (inputs.nunchuk_connected) {
+        outputs.start = inputs.nunchuk_start;
+        outputs.dpadLeft = inputs.nunchuk_dleft;
+        outputs.dpadRight = inputs.nunchuk_dright;
+        outputs.dpadUp = inputs.nunchuk_dup;
+        outputs.dpadDown = inputs.nunchuk_ddown;
+     }
 }
 
 void RivalsOfAether::UpdateAnalogOutputs(const InputState &inputs, OutputState &outputs) {
@@ -54,6 +62,8 @@ void RivalsOfAether::UpdateAnalogOutputs(const InputState &inputs, OutputState &
         outputs
     );
 
+
+    outputs.triggerLAnalog = inputs.l_analog;
     bool shield_button_pressed = inputs.lf4 || inputs.rf5;
 
     // 48 total DI angles, 24 total Up b angles, 16 total airdodge angles

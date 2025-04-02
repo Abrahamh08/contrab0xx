@@ -27,6 +27,14 @@ void Ultimate::UpdateDigitalOutputs(const InputState &inputs, OutputState &outpu
         outputs.dpadLeft = inputs.rt3;
         outputs.dpadRight = inputs.rt5;
     }
+
+    if (inputs.nunchuk_connected) {
+        outputs.start = inputs.nunchuk_start;
+        outputs.dpadLeft = inputs.nunchuk_dleft;
+        outputs.dpadRight = inputs.nunchuk_dright;
+        outputs.dpadUp = inputs.nunchuk_dup;
+        outputs.dpadDown = inputs.nunchuk_ddown;
+     }
 }
 
 void Ultimate::UpdateAnalogOutputs(const InputState &inputs, OutputState &outputs) {
@@ -46,6 +54,8 @@ void Ultimate::UpdateAnalogOutputs(const InputState &inputs, OutputState &output
         outputs
     );
 
+
+    outputs.triggerLAnalog = inputs.l_analog;
     bool shield_button_pressed = inputs.lf4 || inputs.rf5;
 
     if (inputs.lt1) {

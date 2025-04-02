@@ -1,3 +1,10 @@
+personal fork for my DIY hybrid box using wunwaes fork updated to haybox 3.0
+not rly intended for use by others.
+ruleset compliant changes for hybrid melee with nsocd default on c-buttons.
+config mode button hold changed from START -> UP (due to dedicated hybrids not having a start button)
+
+
+
 # HayBox
 
 HayBox is a modular, cross-platform firmware for digital or mixed analog/digital controllers, primarily targeted at [B0XX](https://b0xx.com)-style controllers.

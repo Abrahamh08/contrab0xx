@@ -40,6 +40,14 @@ void Melee20Button::UpdateDigitalOutputs(const InputState &inputs, OutputState &
         outputs.dpadRight = inputs.rt5;
     }
 
+    if (inputs.nunchuk_connected) {
+        outputs.start = inputs.nunchuk_start;
+        outputs.dpadLeft = inputs.nunchuk_dleft;
+        outputs.dpadRight = inputs.nunchuk_dright;
+        outputs.dpadUp = inputs.nunchuk_dup;
+        outputs.dpadDown = inputs.nunchuk_ddown;
+     }
+
     if (inputs.mb3)
         outputs.dpadLeft = true;
     if (inputs.mb2)
@@ -63,6 +71,7 @@ void Melee20Button::UpdateAnalogOutputs(const InputState &inputs, OutputState &o
         outputs
     );
 
+    outputs.triggerLAnalog = inputs.l_analog;
     bool shield_button_pressed = inputs.lf4 || inputs.rf5 || inputs.rf7 || inputs.rf8;
     if (directions.diagonal) {
         // q1/2 = 7000 7000

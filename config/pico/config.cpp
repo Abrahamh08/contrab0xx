@@ -6,47 +6,49 @@
 #include "core/mode_selection.hpp"
 #include "core/pinout.hpp"
 #include "core/state.hpp"
-#include "input/DebouncedGpioButtonInput.hpp"
 #include "input/NunchukInput.hpp"
 #include "reboot.hpp"
 #include "stdlib.hpp"
+#include "HAL/pico/include/input/GamecubeControllerInput.hpp"
+#include "input/GpioButtonInput.hpp"
 
 #include <config.pb.h>
 
 Config config = default_config;
 
 GpioButtonMapping button_mappings[] = {
-    { BTN_LF1, 2  },
-    { BTN_LF2, 3  },
-    { BTN_LF3, 4  },
-    { BTN_LF4, 5  },
 
-    { BTN_LT1, 6  },
-    { BTN_LT2, 7  },
+    // comments refer to melee b0xx default layout for easier understanding
+    { BTN_LF1, 2  }, //right
+    { BTN_LF2, 3  }, //down
+    { BTN_LF3, 4  }, //left
+    { BTN_LF4, 5  }, // L-digital trigger
 
-    { BTN_MB1, 0  },
-    { BTN_MB2, 10 },
-    { BTN_MB3, 11 },
+    { BTN_LT1, 6  }, // modx
+    { BTN_LT2, 7  }, // mody
 
-    { BTN_RT1, 14 },
-    { BTN_RT2, 15 },
-    { BTN_RT3, 13 },
-    { BTN_RT4, 12 },
-    { BTN_RT5, 16 },
+    { BTN_MB1, 0  }, // Start
+    { BTN_MB2, 10 }, // Select
+    { BTN_MB3, 11 }, //  Home
 
-    { BTN_RF1, 26 },
-    { BTN_RF2, 21 },
-    { BTN_RF3, 19 },
-    { BTN_RF4, 17 },
+    { BTN_RT1, 14 }, // a
+    { BTN_RT2, 15 }, //c-down
+    { BTN_RT3, 13 }, //c-left
+    { BTN_RT4, 12 }, //c-up
+    { BTN_RT5, 16 }, //c-right
 
-    { BTN_RF5, 27 },
-    { BTN_RF6, 22 },
-    { BTN_RF7, 20 },
-    { BTN_RF8, 18 },
+    { BTN_RF1, 26 }, // b
+    { BTN_RF2, 21 }, // x
+    { BTN_RF3, 19 }, // z
+    { BTN_RF4, 17 }, //up
+
+    { BTN_RF5, 27 }, // R-digital trigger
+    { BTN_RF6, 22 }, // y
+    { BTN_RF7, 20 }, // max-lightshield
+    { BTN_RF8, 18 }, // mid-shield
 };
 const size_t button_count = sizeof(button_mappings) / sizeof(GpioButtonMapping);
 
-DebouncedGpioButtonInput<button_count> gpio_input(button_mappings);
 
 const Pinout pinout = {
     .joybus_data = 28,
@@ -62,11 +64,13 @@ const Pinout pinout = {
 CommunicationBackend **backends = nullptr;
 size_t backend_count;
 KeyboardMode *current_kb_mode = nullptr;
+GamecubeControllerInput *gcc = nullptr;
 
 void setup() {
     static InputState inputs;
 
     // Create GPIO input source and use it to read button states for checking button holds.
+    static GpioButtonInput gpio_input(button_mappings, button_count);
     gpio_input.UpdateInputs(inputs);
 
     // Check bootsel button hold as early as possible for safety.
@@ -85,7 +89,7 @@ void setup() {
     }
 
     // Create array of input sources to be used.
-    static InputSource *input_sources[] = {};
+    static InputSource *input_sources[] = {&gpio_input};
     size_t input_source_count = sizeof(input_sources) / sizeof(InputSource *);
 
     backend_count =
@@ -112,10 +116,12 @@ void setup1() {
     while (backends == nullptr) {
         tight_loop_contents();
     }
+
+    gcc = new GamecubeControllerInput(9, 2500, pio1);
 }
 
 void loop1() {
     if (backends != nullptr) {
-        gpio_input.UpdateInputs(backends[0]->GetInputs());
+        gcc->UpdateInputs(backends[0]->GetInputs());
     }
 }
