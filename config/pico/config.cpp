@@ -47,7 +47,7 @@ const size_t button_count = sizeof(button_mappings) / sizeof(GpioButtonMapping);
 
 
 const Pinout pinout = {
-    .joybus_data = 28,
+    .joybus_data = 2,
     .nes_data = -1,
     .nes_clock = -1,
     .nes_latch = -1,
