@@ -162,7 +162,7 @@ const Config default_config = {
     .rgb_brightness = 0,
     .has_melee_options = true,
     .melee_options = {
-        .crouch_walk_os = false,
+        .crouch_walk_os = true,
         .disable_ledgedash_socd_override = false,
         .has_custom_airdodge = false,
         .custom_airdodge = { .x = 0, .y = 0 },
