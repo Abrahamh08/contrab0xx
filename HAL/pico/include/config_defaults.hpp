@@ -180,7 +180,7 @@ const Config default_config = {
     .default_backend_config = 1,
     .default_usb_backend_config = 1,
     .melee_options = {
-        .crouch_walk_os = false,
+        .crouch_walk_os = true,
         .disable_ledgedash_socd_override = false,
     },
     .project_m_options = {
